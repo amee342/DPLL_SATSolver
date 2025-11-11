@@ -10,19 +10,50 @@ from typing import Iterable, List, Tuple
 
 
 def simplify(clauses, assignment):
-    pass
+    "With the current assignment, simplify the clauses."
+    new_clauses = []
+    for clause in clauses:
+        # Skip satidsfied clauses
+        if any((lit > 0 and assignment.get(lit, None)==True) or
+                (lit < 0 and assignment.get(-lit, None)==False ) for lit in clause):
+            ### ERROR AT HERE
+            continue
+        # Remove falsified literals
+        new_clause = [lit for lit in clause if not(
+            (lit > 0 and assignment.get(lit, None)==False) or
+            (lit < 0 and assignment.get(-lit, None)==True))]
+        new_clauses.append(new_clause)
+
+
+    return new_clauses
+
 
 def find_unit_clause(clauses):
-    pass
+    for clause in clauses:
+        if len(clause) == 1:
+            return clause[0]
+    return None
 
 def find_pure_literal(clauses):
-    pass
+    all_literals = {lit for clause in clauses for lit in clause}
+    for lit in all_literals:
+        if -lit not in all_literals:
+            return lit
+    return None
 
 def remove_tautologies(clauses):
-    pass
+    """Remove any clause that contains both x and -x"""
+    cleaned_clauses = []
+    for clause in clauses:
+        literals = set(clause)
+        if any(-lit in literals for lit in literals):
+            continue
+        cleaned_clauses.append(list(literals))
+    return cleaned_clauses
 
 def choose_variable(clauses):
-    pass
+    # NO HEURISTIC, just pick the first literal of the first clause
+    return abs(clauses[0][0])
 
 
 def dpll(clauses: Iterable[Iterable[int]], assignment: dict) -> Tuple[str, List[int] | None]:
