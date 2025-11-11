@@ -13,7 +13,6 @@ def simplify(clauses, assignment):
     "With the current assignment, simplify the clauses."
     new_clauses = []
     for clause in clauses:
-        print(clause)
         # Skip satidsfied clauses
         if any((lit > 0 and assignment.get(lit, None)==True) or (lit < 0 and assignment.get(-lit, None)==False ) for lit in clause):
             ### ERROR AT HERE
@@ -130,7 +129,6 @@ def solve_cnf(clauses: Iterable[Iterable[int]], num_vars: int) -> Tuple[str, Lis
     result = dpll(clauses, assignment)
     if result:
         model = [v if assignment.get(v, False) else -v for v in range(1, num_vars + 1)] # unreasonable line\
-        print(model)
         return ("SAT", model)
     else:
         return ("UNSAT"), None
