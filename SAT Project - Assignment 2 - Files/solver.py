@@ -13,9 +13,9 @@ def simplify(clauses, assignment):
     "With the current assignment, simplify the clauses."
     new_clauses = []
     for clause in clauses:
+        print(clause)
         # Skip satidsfied clauses
-        if any((lit > 0 and assignment.get(lit, None)==True) or
-                (lit < 0 and assignment.get(-lit, None)==False ) for lit in clause):
+        if any((lit > 0 and assignment.get(lit, None)==True) or (lit < 0 and assignment.get(-lit, None)==False ) for lit in clause):
             ### ERROR AT HERE
             continue
         # Remove falsified literals
@@ -99,7 +99,7 @@ def dpll(clauses: Iterable[Iterable[int]], assignment: dict) -> Tuple[str, List[
     for val in [True, False]:
         
         new_assignment = assignment.copy()
-        assignment[abs(var)] = val
+        new_assignment[abs(var)] = val
 
         if dpll(clauses, new_assignment):
             assignment.update(new_assignment)
