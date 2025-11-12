@@ -52,8 +52,49 @@ def remove_tautologies(clauses):
     return cleaned_clauses
 
 def choose_variable(clauses):
-    # NO HEURISTIC, just pick the first literal of the first clause
-    return abs(clauses[0][0])
+    # Jeroslow-Wang Heuristic
+    if not clauses:
+        return 1
+
+    # Track j_plus and j_minus scores for each literal
+    j_plus = {}  # Score if the literal is True
+    j_minus = {} # Score if the literal is False
+
+    for clause in clauses:
+        clen = len(clause)
+        if clen == 0:
+            continue
+
+        clause_weight = 1.0 / (1 << clen)
+
+        for lit in clause:
+            # For each literal, calculate the score if it is made True
+            if lit > 0:
+                j_plus[lit] = j_plus.get(lit, 0.0) + clause_weight
+            else:
+                j_minus[-lit] = j_minus.get(-lit, 0.0) + clause_weight
+
+    if not j_plus and not j_minus:
+        return abs(clauses[0][0])
+
+    # Find literal with maximum j = max(j_plus, j_minus)
+    best_literal = None
+    best_score = -1.0
+
+    # Check all positive literals
+    for lit, score in j_plus.items():
+        if score > best_score:
+            best_score = score
+            best_literal = lit
+
+    # Check all negative literals
+    for var, score in j_minus.items():
+        lit = -var  # Convert to negative literal
+        if score > best_score:
+            best_score = score
+            best_literal = lit
+
+    return abs(best_literal)
 
 
 def dpll(clauses: Iterable[Iterable[int]], assignment: dict) -> Tuple[str, List[int] | None]:
