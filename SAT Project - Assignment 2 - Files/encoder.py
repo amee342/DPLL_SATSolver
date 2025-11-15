@@ -62,13 +62,6 @@ def exactly_one(literals):
     
     return clauses
 
-
-
-    
-
-
-
-
 def to_cnf(input_path: str) -> Tuple[Iterable[Iterable[int]], int]:
     """
     Read puzzle from input_path and return (clauses, num_vars).

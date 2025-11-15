@@ -5,9 +5,7 @@ THIS is the file to edit.
 
 Implement: solve_cnf(clauses) -> (status, model_or_None)"""
 
-
 from typing import Iterable, List, Tuple
-
 
 def simplify(clauses, assignment):
     "With the current assignment, simplify the clauses."
@@ -105,17 +103,8 @@ def dpll(clauses: Iterable[Iterable[int]], assignment: dict) -> Tuple[str, List[
             return True
     return False
 
-
-
-
-    
-
-
-
     # Choose a variable to assign (simple heuristic: first literal of the first clause)
     ######## YOUR HEURISTIC HERE ########
-
-
 
 def solve_cnf(clauses: Iterable[Iterable[int]], num_vars: int) -> Tuple[str, List[int] | None]:
     """
@@ -124,7 +113,6 @@ def solve_cnf(clauses: Iterable[Iterable[int]], num_vars: int) -> Tuple[str, Lis
       ("SAT", model)  where model is a list of ints (DIMACS-style), or
       ("UNSAT", None)
     """
-
     assignment = {}
     result = dpll(clauses, assignment)
     if result:
@@ -132,8 +120,3 @@ def solve_cnf(clauses: Iterable[Iterable[int]], num_vars: int) -> Tuple[str, Lis
         return ("SAT", model)
     else:
         return ("UNSAT"), None
-    
-
-
-
-    
